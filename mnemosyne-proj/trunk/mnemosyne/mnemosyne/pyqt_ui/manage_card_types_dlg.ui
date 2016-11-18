@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ManageCardTypesDlg</class>
+ <widget class="QDialog" name="ManageCardTypesDlg">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>352</width>
+    <height>245</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>300</width>
+    <height>240</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Card type manager</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Cloned card types:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QListWidget" name="cloned_card_types"/>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QPushButton" name="clone_button">
+         <property name="text">
+          <string>&amp;New clone</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="rename_button">
+         <property name="text">
+          <string>&amp;Rename</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="delete_button">
+         <property name="text">
+          <string>&amp;Delete</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="exit_button">
+         <property name="text">
+          <string>E&amp;xit</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>exit_button</sender>
+   <signal>clicked()</signal>
+   <receiver>ManageCardTypesDlg</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>342</x>
+     <y>252</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>clone_button</sender>
+   <signal>clicked()</signal>
+   <receiver>ManageCardTypesDlg</receiver>
+   <slot>clone_card_type</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>65</x>
+     <y>220</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>149</x>
+     <y>119</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>delete_button</sender>
+   <signal>clicked()</signal>
+   <receiver>ManageCardTypesDlg</receiver>
+   <slot>delete_card_type()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>223</x>
+     <y>225</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>175</x>
+     <y>122</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rename_button</sender>
+   <signal>clicked()</signal>
+   <receiver>ManageCardTypesDlg</receiver>
+   <slot>rename_card_type()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>140</x>
+     <y>225</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>175</x>
+     <y>122</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

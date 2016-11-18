@@ -1,0 +1,996 @@
+Android 20160502:
+
+-Upgraded backend to Mnemosyne 2.3.6, meaning that logs older than 1 year
+ are now automatically archived in a separate file, which is not backed 
+ up all the time, speeding up the sync process and taking less space.
+-Switched to Material design, also making it easier to access the menu on 
+ some devices which had problems with this before.
+-Implemented full screen immersiver mode for Android KitKat and higher.
+-Buttons are now in the middle of the screen to better facilitate
+ ergonomic one-handed operation.
+
+Mnemosyne 2.3.6 : 2016-05-02
+
+-Logs older than 1 year are now automatically archived in a separate file,
+ which is not backed up all the time, speeding up e.g. the sync process.
+-The card browser now supports more html formatting, e.g. ruby tags. 
+-URLs in cards in the review widget now open in an external browser, rather 
+ than the internal Qt webview which does not have back buttons e.g..
+-Only changing a card type in the 'Edit current card' dialog now works again
+ (reported by Henrik).
+-Failed cards no longer are listed as overdue in the card browser (requested
+ by Samuel Innes)
+-Fixed bugs related to Unicode filenames under Android (reported by Jan 
+ Egil Hagen). 
+-When adding a tag with the same name both on client and server before 
+ syncing, rename one of these tags. Users still need to unify and activate
+ the tags though (reported by Jan Egil Hagen). 
+-Added a --version command line argument to display the version (requested by
+ Matthew Exon).
+-Also accept files with *.tsv extention when importing tab-separated data
+ (requested by Ojas A). 
+-Don't leave the 'Client Logging in...'' dialog on the sync server open in 
+ case the client provides a wrong password (reported by Eric).
+-Fixed formatting when using 'db_media:///' in cards with javascript (
+ reported by Pete Kovalenko).
+
+
+Mnemosyne 2.3.5 : 2015-12-07
+
+-New OSX installer by Devin Howard.
+-Fix editing of empty fields (reported by Malik Olivier Boussejra).
+-Fix crash when compacting database (reported by David Bailey).
+-Fix sound system under Linux (reported by David Bailey, Joel Pettersson).
+-Make determining local IP address more robust (reported by Matthew Exon).
+
+
+Android 20151005:
+
+-Upgraded to the latest libmnemosyne (2.3.4)
+-The counters now correctly update if you leave Mnemosyne running overnight.
+-Mnemosyne's media files no longer show up in your music player or gallery.
+-Ignore spaces at the end of e.g. username and password.
+-Better feedback if you have no saved sets.
+
+
+Mnemosyne 2.3.4 : 2015-10-05
+
+-When importing another database with learning data, don't reset the creation
+ and modification times of cards.
+-When switching card sets, no longer keep showing an unlearned card that was
+ being asked when the switch took place, but give precedence to scheduled cards.
+-Improve robustness of sync protocol.
+-When moving to a next card, kill the audio from the previous card.
+-Multiple media files per card now works in conjunction with the 'start' and
+ 'stop' options.
+-When editing a card from the card browser, PgUp and PgDown no longer discard
+ the changes (reported by vmixeen).
+-Fixed issue where creating clones of card types would sometimes clone the wrong
+ card type.
+-Prefill tag behaviour plugin: don't update the last used tags when editing a 
+ card, only when adding new cards.
+-Better runtime documentation for the '(De)activate cards' dialog (requested by 
+ Matthias Ernst).
+-Allow Cntl-C to copy text from question if answer is showing (reported by
+ Mathias Ernst). 
+-Fix Windows-specific bug, where Mnemosyne would not notice that you were trying
+ to open a backup and would not take the appropriate actions.
+-When running the sync server on e.g. a headless machine which does not have 
+ latex installed, don't waste time looking for updated latex cards.
+-Fix regression where a currently active set would not show up as highlighed
+ in the 'saved sets' panel when starting '(de)activate cards' (reported by 
+ Matthias Ernst).
+-Improve run-time help with respect to editing a saved set (requested by
+ Mathias Ernst). 
+-To work around bugs in Qt under Linux, media are also played using
+ mplayer, just like under Windows (reported by Francesco Ariis). 
+-Fix problems with not detecting autorepeat when pressing grade buttons
+ (patch by Kilian Evang).
+-Fix RTL issues (reported by Mateusz Konieczny).
+-Fix potential bug when exporting clones of cloned card types.
+
+
+Mnemosyne 2.3.3 : 2015-04-13
+
+(Note that for Windows users we recommend uninstalling the previous version
+before installing the new one.)
+
+-Fix regression where it was not possible to grade map cards (reported by 
+ Mateusz Konieczny).
+-Also allow mass conversion of cards to Cloze and Sentence card types 
+ (requested by Chris Nadt). 
+-Change ',' to ' - ' when importing legacy tag names (reported by Matthias 
+ Ernst).
+-Fix some keyboard shortcuts while displaying map cards (reported by 
+ Mateusz Konieczny).
+
+
+Mnemosyne 2.3.2 : 2015-02-25
+
+-Option to merge databases (under File - Import - Mnemosyne 2.x *.db files).
+-Make sure latex files are always pregenerated before sync (reported by Eric 
+ Freeman).
+-Fix error syncing filenames containing double dots (reported by Eric Freeman).
+-Strip control characters from strings when exporting and syncing (reported 
+ by Carl Kennedy).
+-Smart sorting of card types in dialog boxes (patch by Emilian Mihalache).
+-Fix when importing 1.x databases containing a single quote in a media filename
+ (reported by Jan Egil Hagen).
+-Don't replace newline with <br> inside textarea tags (patch by Pete 
+ Kovalenko).
+-Fix crash when running in headless mode after having run with the GUI 
+ (reported by Chris Nadt).
+-Fix handling of media filenames containing '#' (reported by Philip Gubser).
+-Don't crash the SQL engine if you have more than 1000 tags (reported by Mats 
+ Hansson).
+-Fix regression in merging and editing duplicate cards (reported by Marcin M.).
+-Update the window title on a sync server if a different database was loaded.
+-Make upgrading from 2.3 config database more robust (reported by Lewis White).
+-Better error handling when trying to load a database which no longer exists
+ in its previous location.
+-Make sure we can run on systems with PyQt5 installed (patch by Nuno Araujo).
+-The "db_media:" tag now expands to an absolute path on all systems (reported
+ by Gnome).
+-The local timezone is now stored in the science logs. 
+
+
+Mnemosyne 2.3.1 : 2014-06-18
+
+-Change database backend for config file. There should be no more errors
+ which cause you to delete the config file.
+-Don't import cherrypy if not using the sync server (workaround for mimetype
+ bug in non-unicode systems) (reported by Steven Lee, Pete Kovalenko).
+-Don't give spurious warning about different tags in different sister cards
+ when creating new clozes when editing a card (reported by Scott Youngman).
+-Fixed some issues with tabbing to buttons in a dialog not selecting the right
+ button (reported by Scott Youngman).
+ 
+Mnemosyne 2.3 : 2014-04-23
+
+
+The sync protocol has changed in this version, so make sure you update both
+the client and the server at the same time.
+
+-A quick-and-dirty Android client is available, where you can do reviews in
+ your mobile browser using a webserver which runs on your Android device.
+ This client has full support for the syncing protocol.
+-The functionality of mnemosyne-webserver has now been merged into the main
+ program and can be activated through 'Configure Mnemosyne - servers'.
+-Time to create backups has decreased, in some situations even by a factor 
+ of 2 or more, speeding up syncing and program exit.
+-Sped up all editing operations in the card browser.
+-The name of the currently active saved set of cards is now listed in title
+ bar (requested by Silverbear).
+-Added new statistic: number of new cards learned per day.
+-Also sync relevant settings (e.g. fonts, colours, ...) during the initial
+ sync.
+-Improve the timeout handling of the sync protocol.
+-New Ukranian, Swedish, Serbian, Catalan translation.
+-Fix erroneous 'Wrong username or password' error.
+-Rework error handling when trying to load a database which no longer exists
+ in its previous location.
+-Keep the sort order in the card browser when editing cards (reported by
+ Gnome and Tristan).
+-Added command line options --sync-server and --web-server which starts the 
+ sync and the web server in headless mode (i.e. without a GUI) (useful to run 
+ e.g. on a NAS server).
+-Fix more errors coming from loading config files (thanks to Alex Fevery for
+ reporting this).
+-Added an extra popup to guide new people better through the learning process
+ (feedback from Bjorn Maes).
+-Fix crash when exporting to cards format when Latex was not installed 
+ (reported by Gwern).
+-Make card conversion more robust for badly formatted card (reported by Gnome).
+-When editing a card through the browser, make sure the correct set of tags is
+ displayed if sister cards have different tags (requested by Scott Youngman).
+-Allow converting a Cloze card to a clone of a Cloze card through the browser
+ (requested by Scott Youngman).
+-Instruct people on the correct way to deal with '*.cards' files if they try
+ to open it as a separate database (Kensor0).
+-Make it clearer what 'Find duplicates' does.
+-Various cosmetic fixes when importing *.cards files (reported by Ansgar 
+ Bohmann).
+-Fix tag tree sometimes not updating correctly if the user adds a new tag.
+-People writing e.g. Javascript card and needing access to the full path of
+ the media directory can now use db_media:///foo.png (requested by Gnome).
+-Flash files are now synced as well (reported by heldtfisken).
+-When editing a card where different sister cards have different tags, ask if
+ the tags should be applied to the current card or to all sister cards.
+-Fix Windows crash when using the card browser with cards imported from
+ Supermemo (reported by Piotr).
+-Fix crash when renaming cloned card types through the card browser.
+-Make Mnemosyne 1.x import more robust (reported by Jack Thro).
+-Don't allow saving the database to a network drive under Windows to prevent
+ corruption (reported by Brendan Sinclair).
+-Fix sync error that could occur when adding and immediately deleting multiple 
+ sister cards from the card browser.
+-Fix latex / cloze interaction corner case (reported by Daniele Parisi).
+-Fix corner case of overzealous introduction of media dir in expansion 
+(reported by Toni Alsford).
+-Make sure latex images are always in sync when updating text.
+-If adding an extra tag when importing a 'cards' file, don't keep the tag
+ 'Untagged' (patch by crcmail0). If you were affected by this issue before,
+ 'compact database' will solve this.
+
+
+Mnemosyne 2.2.1 : 2013-04-15
+
+(Note that for Windows users we recommend uninstalling the previous version
+before installing the new one.)
+
+-The premade cards from the old 1.x website have now all been converted to the
+ new 2.x cards format and put on the new website. This will make importing
+ much easier, as graphics are bundled (thanks to Patrick Kenny for the
+ conversion).
+-For txt import, a text file can now contain a fourth column which will be
+ mapped to the 'notes' field of a Vocabulary card.
+-When editing or browsing cards, don't reset the state of the scheduler such
+ that you need to press 'show answer' again or such that a new card appears
+ (reported by Gnome).
+-Remember which tags where expanded/collapsed in the tag tree (requested a.o
+ by Troy Guze).
+-Correctly update flag 'hide pronunciation' in the popup menu (reported by
+ Tom Cato Amundsen).
+-When merging duplicate cards, merge tags also (requested by Stephan Maseizik).
+-Fix regression where all the dialogs would have generic names ('mnemosyne')
+ as opposed to e.g. 'Add cards'.
+-Correctly format clozes in latex, e.g. [Lorentz force law]
+ <$>[\mathbf{F}]=[q]([\mathbf{E}]+[\mathbf{v}\times\mathbf{B}]</$>
+ ()requested by acdenh). If you want literal [] in latex, use \left[
+ and \right].
+-Fix crash when converting multiple cards at the same time between e.g.
+ Vocabulary card type and Map card type (reported by Gnome).
+-No longer allow mass converting of cards to Cloze card types, as this
+ requires editing of the card content for each card anyhow (reported by Scott
+ Youngman).
+-Fix browser crash occuring after deleting a card type which had custom
+ formatting (reported by Tom Zerlau).
+-Unless the 'Prefill tag behaviour' plugin is active, changing card types will
+ never change the tag you already filled in, even if it's different from the
+ last used tag (reported by Gnome).
+-When changing the font for '<all card types>', make a more neutral choice
+ for default font in case currently different card types have different
+ fonts (reported by Gnome).
+-Make sync and sync error handling more robust.
+-In case you don't explicitly select a background colour, use your theme's
+ background colour as opposed to white for empty cards (reported by ialectum).
+-The quote key to left of 1 (`) can now also be used as a short cut for grade 0
+ (requested by Kent Stearman).
+-In the card browser, CTRL+F can be used to focus the input on the search
+ field (requested by abacus).
+-Improve the position of dialogs popping up from the card browser,
+ sync window, ... .
+-Fix crash pressing the 'Delete' key in the 'Activate cards' dialog (reported
+ by Gnome).
+-When changing card types, only warn about losing history when there is actual
+ history present (reported by Gnome).
+-In case you are not using saved sets and create a new tag whose parent is
+ inactive, make the new tag inactive too. (If you have a saved set active,
+ you'll get a dialog box asking whether you want to activate that tag or not,
+ just like before) (reported by Gnome).
+-Fix bug in interaction between Latex system and exporting to the 'cards'
+ format (reported by Gwern).
+-More tweaks for RTL languages like Arabic and Hebrew (bug report by
+ Ansgar Bohmann).
+-No more superfluous empty lines for cards with RTL languages.
+-When changing languagues, translate the window title immediately, instead
+ of after reboot.
+-On a Thai system, don't use Thai numerals in the card browser if the language
+ is set to English (requested by Mark).
+-Take time zone information into account when displaying creation date of
+ card in browser.
+-When renaming a saved set, prefill the name field with the previous name of
+ the set.
+-Don't reset selected plugin when importing a new plugin (reported by Gnome).
+-When trying to deactivate a card type in use, show name of the card type in
+ the error message.
+-Fix CTRL+F shortcut for inserting flash, CTRL+D for inserting video, and
+ CTRL+C for copying (reported by Gnome).
+-Tab key now cycles through all the grade buttons (reported by Gnome).
+-Fix grading shortcuts R and W for 'right' and 'wrong' in the cramming
+ scheduler.
+-Backspace and delete shortcuts to delete the current card work again
+ (reported by Dylan Gordhan).
+
+
+Mnemosyne 2.2 : 2012-12-04
+
+-Added menu option to detect duplicates in the database.
+-Made the cramming scheduler more configurable. Cards can now be studied in
+ random order, earliest first, lastest first or most lapses first. Also,
+ you have the option of whether to save the scheduler state or not when exiting
+ the program.
+-The way the tag field is prefilled for new cards is changed. By default, the
+ last used tag is used, regardless of card type. If you want the pre-2.2
+ behaviour, where the last used tag is remembered per card type, there is a
+ bundled plugin you can activate.
+-When exporting to the 'cards' format, the latex files are now pregenerated
+ and bundled (requested by Mark).
+-Fix errors coming from loading config files (reported by knutflatland and
+ many others).
+-Ported missing import file formats from 1.x: SuperMemo7 text, SuperMemo from
+ Palm, Cuecard WCU.
+-Double-clicking on a saved set in 'Activate cards' now automatically selects
+ the set and closes the window (requested by Michael Campbell).
+-Add "Insert Flash" option (Note: Flash needs to be installed on your system
+ for this to work) (requested by Gnome).
+-Added support for video files under Windows (contrary to Linux, they will
+ play in an external window using mplayer).
+-When you have both tags "A" and "A::B", the card browser will now show the
+ first tag as "A::Untagged".
+-Javascript can now contain line breaks (reported by iBayer and gnome).
+-In 'edit cards', make more robust of no longer warning about discarding
+ changes if you did not make any.
+-Sped up deleting of large number of cards from the card browser.
+-When pasting into the "Add cards" or "Edit cards" dialog, respect the
+ formatting of the card field.
+-Be more robust against importing 1.x cards with missing information (reported
+ by Chris Resnik and Patrick Kenny).
+-Bug fix involving notes with multiple lines with exporting cards.
+-Fix bug with picture sometimes not showing when first starting the program.
+-Better support for non-latin characters in sound files under Windows (reported
+ by Raoul Pontecaille).
+-Fix crash in 'Compact database' involving too many open files (reported by
+ Pawel Szerszon).
+-Fix situation where tag pane would be no longer visible after adding a first
+ saved card set.
+-Changing card types and deleting cards from the card browser is now faster.
+-No longer convert filenames to lower case on Windows (requested by Michael
+ Campbell).
+-Fix another crash involving duplicates while converting cards (reported by
+ Gnome).
+-When upgrading from 1.x on OSX, explicitly tell the user where their 1.x
+ data was backed up.
+-Fix displaying non-latin characters in statistics (reported by Pawel Szerszon).
+-Don't erase fields when cancelling a card type conversion (reported by Gnome).
+-Don't allow cancelling the import metadata information dialog.
+-Fix harmless error message when converting to Cloze cards in the card browser
+ (reported by Michael Campbell).
+-Upgraded to latest version of Qt/PyQt (4.9.5).
+
+
+Mnemosyne 2.1 : 2012-09-10
+
+-New import/export format to share cards, which also bundles the media files.
+ Supports importing an updated version of the same exported cards, so that
+ authors can release updated versions of their cards fixing e.g. spelling
+ mistakes.
+-Implemented txt export with tab-separated values.
+-You can now specify more than 1 tag to add during import
+ (requested by Barbara).
+-In 'edit cards', no longer warn about discarding changes if you did not make
+ any.
+-Don't crash card browser when searching for \ (reported by Faemorleto).
+-Fix bug where active tags would sometimes not have a checkbox in the card
+ browser (reported by Gnome).
+-Fixed issues involving tag renaming and syncing (reported by Barbara).
+-Made RTL handling for Arabic and Hebrew more robust.
+-audio tags now support start and stop arguments, e.g. <audio ...
+ start="1" stop="2"> will play the sound file from 1 to 2 seconds.
+-Fix crash when cancelling duplicate insertion while converting cards
+ (reported by Gnome).
+-Fix crash when renaming saved card sets (reported by Pawel Szerszon).
+-Make detection of unused media files more robust with case insensitive
+ filesystems (reported by Pawel Szerszon and Gnome).
+-Fix error when resetting configuration to defaults (reported by
+ Pawel Szerszon).
+-Fix for missing Chinese labels in the statistics plots (reported by Bono
+ Shih).
+-Fix for rare hangs 'assert interval == 0' (reported by Tom Cato).
+-Translation fixes when converting between card types (reported by Gnome and
+ Chris Schmidt).
+-Make terminology in 'Current card' statistics more consistent with the card
+ browser (reported by Henrik Giaever).
+
+
+Mnemosyne 2.0.1 : 2012-08-02
+
+-Fix occasional hang during review (Thanksto Scott Youngman and Chris Shanks
+ for helping to debug this).
+-In cloze card types, you can now provide hints, e.g. [cloze:hint] will show
+ [hint] in the question as opposed to [...]
+-Added Sentence card type plugin. If you put this in the 'Sentence' field:
+ "La [casa:house] es [grande:big]", you'll get three sister cards with the
+ following questions: "La casa es grande", "La [house] es grande",
+ "La casa es [big]"
+-Fix bug where the wrong clone would be renamed (reported by Herman Gunn).
+-Take size of media player widget (Linux only) into account when calculating
+ the optimal split between question and answer.
+-Fixed bug where card appearance settings would not be synced between different
+ machines.
+-Fixed issue in Activate cards, where a set without a name and a saved set
+ would interfere.
+-The dialog where you name saved sets is now a combobox which also list the
+ current saved sets, to allow for easier updating of a saved set.
+-Message boxes are now centered over the current window (card browser, ...) as
+ opposed to the main window.
+-Longer initial interval if the first grade you gave a card is 5.
+-Fixing card merging losing information on Vocabulary card types (reported by
+ Stephan Maseizik).
+-Before merging cards, more information is presented on the data that is
+ already in the database (requested by Stephan Maseizik).
+-Fixed spurious firing of missing media detection (reported by Geir).
+-Fixed a few bugs when displaying the edit or preview windows from the card
+ browser and using PgUp and PgDown to move to the previous/next card (reported
+ by Chris Schmidt).
+-When adding a duplicate card, rather than forbidding the user to add it, ask
+ the user if he really wants to do this (requested by Laurent Humblet).
+-The webserver now supports the -d option to specify the data directory
+ (requested by Sirius533).
+-Fixed crashes in card browser with non-latin clone names (reported by Gabriel
+ Benamouzig).
+-Prevent uninstalling a card type plugin if a clone of that card type has been
+ created, even if it does not yet have any cards.
+-Further fixes for Hebrew (reported by Eliyahu Switzer and Chris).
+-Upgraded many of the libraries on which Mnemosyne depends (PyQt, numpy,
+ matplotlib)
+-Updated user contributed translations.
+
+
+Mnemosyne 2.0 : 2012-06-16
+
+Four years in the making, this is essentially a complete rewrite of the old
+1.x codebase, with a new, clean design, consisting of components that can be
+swapped in and out very easily, which allows plugin writers maximum
+flexibility.
+
+Major user-visible changes:
+
+-Support for what is called card types. The main user visible changes are that
+ editing a vice versa card or three sided card will automatically update the
+ related card. There is also support for N-sided cards.
+-Whereas in Mnemosyne 1.x, a card could belong to only one category, now a
+ card can have multiple tags. Tags can also be organised in a hierachy, with
+ '::' separating the levels of the hierachy.
+-Powerful new card browser, giving much more information and flexibility to
+ organise your cards.
+-'Activate cards' is completely revamped and is much more flexible. Also, sets
+ of active cards can be now be saved for easier access later.
+-Graphical statistics, easily extensible through plugins (first implementation
+ by Mike Appleby).
+-Each individual field in a card can now have its own font, colour, ... which
+ can be set through the GUI. Background colour is also configurable per card
+ type.
+-The widget that displays the cards is now a full webbrowser, with e.g.
+ support for Javascript, animated gifs, ... .
+-Added cramming scheduler plugin, which goes through your cards in random
+ order and does not affect the normal scheduler data. It is visually
+ distinguished from the regular scheduler by having only two grade buttons
+ (Right and Wrong).
+-Sync protocol, to synchronise a mobile device to your desktop client. Fully
+ bidirectional, i.e. you can add new cards on your desktop and review old
+ cards on your phone, and both sets of changes will be merged seamlessly.
+ Can sync with more than 1 partner. Optimised for speed and memory usage
+ on mobile devices. First implementation by Ed Bartosh and Max Usachev.
+-Prototype webserver for reviews through a browser. Should be functional, but
+ contains no security and is not yet integrated with the GUI. Start the
+ mnemosyne-webserver executable and follow the instructions.
+
+
+Other changes:
+
+-Move from Qt3 to Qt4 as GUI toolkit, which has better performance and
+ eliminates many interface quirks.
+-Move to SQL as the storage backend, resulting in improved speed and memory
+ usage, as well as better scalability for large decks (first implementation
+ by Ed Bartosh).
+-Added card type for maps, and for cloze deletion.
+-Plugins can now be turned on and off through the GUI.
+-Windows use scroll bar when the data does not fit.
+-When importing a sound or an image, a copy is made to the mnemosyne data
+ directory. This saves some confusing explaining to new users about the
+ difference between relative and absolute paths.
+-Mnemosyne can now save after each reviewed card. Default is to only save after
+ 10 reps, to save battery.
+-Avoid showing the same card twice in a row during review.
+-Replaced 'number of grade 0 cards to hold in your hand' by 'number of non
+ memorised cards to hold in your hand', so that the limit now works on the
+ total of grade 0 and 1 cards. Default value is 10.
+-Warn if the user memorises over 15 new cards in a session.
+-The keyboard shortcuts for the reviewing process no longer auto-repeat.
+-Added option to control whether media (sound/video) gets started automatically
+ when displaying a card (Currently not on Windows due to Qt bug).
+-Added option to display a media control (play/pause/slider) (Currently not on
+ Windows due to Qt bug).
+-Improved backup scheme. Users can now restore from backups using the
+ File - Open menu, as opposed to first decompressing a file outside of
+ Mnemosyne.
+-Importing from XML files has been sped up considerably (Johannes Baiter)
+-The learning history is now stored in an SQL database, allowing to calculate
+ more statistics.
+-The plugin mechanism encompasses also the statistics, configuration and card
+ activation screens.
+-Cards which are failed during learning ahead are now periodically brought
+ back in the learning process.
+-Mnemosyne now stores its data in a more standards compliant location:
+ C:/Users/peter/Application Data/Mnemosyne under Windows, and
+ /home/pbienst/.local/share/mnemosyne and /home/pbienst/.config/mnemosyne
+ under Linux.
+-When leaving the program open overnight, the display will update at the
+ roll over point.
+-Intelligent sorting of categories containing numbers, so that you no longer
+ have to call a category 'Lesson 01' instead of 'Lesson '1 to get the correct
+ ordering (Mike Appleby).
+
+
+Mnemosyne 1.2.2 : 2010-01-29
+
+(Note that for Windows users we recommend uninstalling the previous
+version before doing an upgrade.)
+
+-Added support for Tim Bourke's Mnemogogo plugin, which enables you
+ to review cards on Java-based phones. See
+ http://www.tbrk.org/software/mnemogogo.html
+-fix rare hang in preprocessing paths (reported by LooM).
+-Remove hidden limit on grade 1 cards.
+-Italian translation by Enrico Leoni.
+-Turkish translation by Sercan Oruc.
+-Updated German translation by Dimitri Scheftner.
+-Updated French translation by Christophe Mealares and Yannick Voglaire.
+-Hungarian translation by bkile.
+
+
+MNEMOSYNE 1.2.1 : 2009-04-11
+
+-Fix bug so that vice versa cards now always start with grade 0.
+-Fix problems with missing locale under some unix systems.
+-Fix hang under Spanish translation.
+-Danish translation by Randi H.
+-Esperanto translation by jchthys.
+-Updated Japanese translation by Patrick Kenny.
+
+
+MNEMOSYNE 1.2 : 2008-11-25
+
+-Improved support for unicode in filenames and directories.
+-Reverted compression of backups from gz to bz2 again, to circumvent a
+ bug under Windows with unicode directory names.
+-Wrote a plugin to always shuffle the revision queue, for users who want
+ to override the prioritised scheduling introduced in Mnemosyne 1.1.
+ This plugin can also be downloaded from
+ http://www.mnemosyne-proj.org/node/142
+-Only open the sound system when needed in order to save CPU time
+ (patch by marmuta).
+-More robust upgrading from old Mnemosyne versions.
+-Fix bug where default export location was incorrectly specified.
+-Reword statistics dialog to make clear that we only show data for
+ the next week.
+-Norwegian translation by Petter Goksoyr Asen.
+
+
+MNEMOSYNE 1.1.1 : 2008-08-23
+
+Databases opened by this version of Mnemosyne will no longer work under
+older versions.
+
+-Fixed 'learn new cards in random order' problem for imported cards (reported
+ by Adam McCaughan).
+-Fixed detection of relative paths under Windows (reported by E. Grannan).
+-Renamed 'number of grade 0 cards to learn at once' to 'number of grade 0
+ cards to hold in your hand' (suggested by Kenneth Murphy).
+-Updated Czech translation by Jiri Popelka and Petr Tomica.
+-Updated Japanese translation by Patrick Kenny.
+
+
+MNEMOSYNE 1.1 : 2008-07-26
+
+-Added statistics for the current card to the statistics window.
+-More features for plugin writers. Arbitrary code can now be run after the
+ database is loaded, as well as code to intercept and modify question and
+ answer strings before they are displayed. There is a plugin directory in
+ the source distribution with examples, e.g. to activate all the categories
+ on startup, or to add the last grade to the answer text, or to add a new
+ import file format (CSV in this case), or to create custom tags and run
+ its contents in an external program.
+-New cards can either be learned in random order or in the order that they
+ were added (configurable through the GUI).
+-Prioritise cards forgotten during the review over cards which have not yet
+ been committed to long-term memory.
+-Improved scheduling of overdue cards, by placing those with a shorter
+ interval first. Being a day late on an interval of 2 could be much worse
+ than being a day late on an interval of 50.
+-Fix some keyboard shortcut quirks (reported by Stephen Boulet and varkhan1).
+-Removed pyxml dependency. This fixes the "'module' object has no attribute
+ 'DefaultHandler'" error message on Ubuntu (Albert Damen).
+-Hebrew translation by Michal T.
+-Updated Japanese translation by Patrick Kenny.
+
+
+
+MNEMOSYNE 1.0.2 : 2008-07-10
+
+-Added import/export support for CueCard wcu files (Chris Aakre).
+-Added features to improve display of map cards from svgtoquiz (Timothy
+ Bourke).
+-Added support for Mac installer through py2app (Konrad Wojas).
+-On OSX, Mnemosyne now stores its data in Library/Mnemosyne (Konrad Wojas).
+-Added <protect>...</protect> tags. Text within these tags will not be
+ touched by 'increase size of non-latin characters' (Konrad Wojas).
+-Changed compression format of the backups from bz2 to gz. This results in
+ less compression, but a much faster program exit (suggested by Konrad Wojas).
+-Added midi files to "import sound" file dialog (suggested by Johan Forsberg).
+-Polish translation by Tomasz Nazarenko.
+-Japanese translation by Patrick Kenny.
+-Persian translation by Bahman Eslami.
+-Brazilian Portugese translation by Fabio Kreusch.
+-Make dvipng invocation more robust. Especially helpful for Ubuntu users.
+ (Thanks to Stephen Boulet and franny1).
+-Fixed bug where day_starts_at was not working (Konrad Wojas).
+-Fixed bug where relative paths wouldn't work with non-standard directory
+ locations (reported by reynard and stvltvs).
+-Fixed bug with non-latin filenames and increase size of non-latin characters
+ (Nils Barth).
+-Make import of Supermemo for Palm databases more robust (Felix Engel).
+-Make XML import from svgtoquiz more robust (bug reported by Mercado1).
+
+
+
+MNEMOSYNE 1.0.1.1 : 2008-03-22
+
+-Disabled making grade 0 the keyboard default for cards with previous
+ grades 0 or 1, as a (Py)Qt bug seems to make it unreliable under Windows
+ (reported by Bernhard Blum).
+
+
+MNEMOSYNE 1.0.1 : 2008-03-16
+
+-Make grade 0 the keyboard default for cards with previous grades 0 or 1.
+-Add support for html style escaped unicode in txt import, to allow import
+ of Supermemo databases containing unicode (requested by Patrick Kenny).
+-Support import of Supermemo for Palm databases that were converted to XML
+ by smconv.pl from http://smconvpl.sourceforge.net (code by Felix Engel).
+-Make import of tab delimited files more robust (reported by nairbv).
+-Added new option in config.py (backups_to_keep) to be able to change the
+ number of daily backups to keep. Set to -1 for no limit (requested by
+ Patrick Kenny).
+-Added new option in config.py (day_starts_at) to be able to change the
+ moment a new day starts (requested by Patrick Kenny).
+-On Windows, log errors to a file in the user's directory, as opposed to a
+ file in a system directory (requested by nairbv).
+-Visually distinguish grades 0 and 1 from other grades (based on input
+ from Juan Alonso and Mike Charlton.)
+-Czech translation (cs) by Jiri Popelka and Petr Tomica.
+-Chinese translation (zh_CN, zh_HK, zh_SG, zh_TW) by Leon Goo.
+-French translation (fr) by Jamshid Bahar.
+
+
+MNEMOSYNE 1.0 : 2007-12-27
+
+(Note that for Windows users we recommend uninstalling the previous
+version before doing an upgrade.)
+
+-Mnemosyne can now be run from a USB drive. Copy the Mnemosyne directory
+ from C:\Program Files to your USB drive, and then copy the .mnemosyne
+ directory from inside your home directory to inside the Mnemosyne directory
+ on the USB drive. Alternatively, you can start mnemosyne with the -d option
+ to specify where .mnemosyne directory is located, e.g.
+   F:\Mnemosyne\mnemosyne.exe -d F:\.mnemosyne
+
+ To run the Linux version from a USB key, untar the source file
+ mnemosyne-X.X.tgz (with X.X the version number) to the USB key. Copy your
+ .mnemosyne directory to the USB key as well. Change to the directory where
+ the USB key is mounted and type
+
+ PYTHONPATH=mnemosyne-X.X python mnemosyne-X.X/mnemosyne/pyqt_ui/mnemosyne -d .
+
+ (This assumes that the system you are working on has Python installed, as
+ well as all the libraries Mnemosyne requires.)
+-new logo, thanks to a contributor whose name sadly got lost in the
+ demise of the open-collab site.
+-new icons, based on the Crystal iconset.
+-added tip of the day wizard.
+-implemented a basic plugin system. The directory .mnemosyne/plugins
+ can contain Python scripts which will be executed at run time and
+ which can be used to customise Mnemosyne or add new features.
+-when importing from tab separated txt files, the presence of 3 columns
+ on a line gives results in the import of 3-sided cards (written form /
+ pronunciation / translation).
+-choosing 'reset learning data' on export now preserves the relationship
+ between cards (for e.g. inverses and three-sided cards).
+-automatically back up the database to XML on exit. The last five backups
+ are kept in .mnemosyne/backup.
+-support for multiple sound tags per field (requested by compiu).
+-removed a few rarely used options from the configuration dialog and
+ placed them in .mnemosyne/config.py, a new file which can be used to
+ set these and other rarely used options.
+-increase the maximum value of 'increase size of non-latin characters'
+ to 200 (requested by Mike Charlton).
+-make 'increase size of non-latin characters' more robust (Nils Kriha).
+ Previously, not all values of this setting would result in a visible
+ change.
+-don't count inactive cards in the grade distribution in the statistics
+ window (reported by Joonatan Kaartinen).
+-add support for translations. (German translation provided by Martin Mueller,
+ Spanish by Daniel Alvarez Wise and Juan Alonsa, Dutch by Edwin de Jong)
+ The translation will be chosen automatically based on your system's
+ localisation, but can be overridden by editing the 'locale' variable in
+ .mnemosyne/config.py.
+-improved tooltips.
+-added desktop file, so that Mnemosyne shows up in the application menu
+ under Linux.
+-more verbose error messages when an import failed, showing the line that
+ failed to parse.
+-log uploading now works if a proxy is needed to access the web.
+-added support for Unicode filenames.
+-recreate user id from history folder in case the config file was
+ accidentally deleted.
+-don't exit when final save failed (requested by lebowski_404).
+-added more supported sound and picture formats.
+-don't stumble over (invalid) unicode in latex commands (reported by Tomek
+ Guzialek).
+-fixed 'Save as' option.
+
+
+MNEMOSYNE 0.9.10 : 2007-10-28
+
+-added 3-sided cards, to make dealing with vocabulary in foreign scripts
+ easier. Right clicking the text field in 'add cards' gives you to option
+ to switch to 3-sided card input, which replaces the question and answer
+ fields by 3 fields: written form, pronunciation, translation. After
+ selecting an initial grade, 2 cards will be added:
+
+  Q: written form
+  A: pronunciation
+     translation
+
+ and
+
+  Q: translation
+  A: written form
+     pronunciation
+
+-when creating multiple cards from the same data (either through add vice
+ versa or the 3-sided input), the relationship between these cards is now
+ stored. In a future version, this will make it possible that editing one
+ card of the set automatically updates the other ones.
+-added feature to insert an image or a sound tag by using a file selector.
+ Accessed through popup-menu or keyboard shortcuts.
+-remember more settings across invocations: file formats and directories,
+ reset learning data, column width and sorting order, ...
+-rationalised keyboard shortcuts and menus. Added list of keyboard shortcuts
+ to the website.
+-polished file dialogs.
+-when possible, paths in the config file are now saved relative to the
+ .mnemosyne directory rather than as absolute paths. This makes it easier
+ to copy the .mnemosyne directory back and forth between a Linux and a
+ Windows machine.
+-respect duplicate handling configuration options when importing (reported
+ by lebowski_404).
+-latex output and error messages are now written to the file
+ .mnemosyne/latex/latex_out.txt rather than to the screen, so that they
+ are not lost for Windows users.
+-fixed bug when showing the statistics for an empty database (reported by
+ Gintautas Miliauskas).
+
+
+MNEMOSYNE 0.9.9 : 2007-08-16
+
+-added 'Show statistics' menu option, showing the schedule for the
+ next week, the distribution of the items over the grades and the number
+ of items for each category.
+-added simple per-item statistics in pop-up menu in 'edit items'.
+-performance improvements.
+-new latex tags, based on code by Christopher Gilbreth and bug reports by
+ Jamned:
+   -<$>...</$>         : for inline equations
+   -<$$>...</$$>       : for centered equations on a separate line
+   -<latex>...</latex> : for latex code not in a certain environment
+ This means that the functionality of the old <latex>...</latex> tags is
+ now taken over by <$>...</$>. However, there is no need to update your
+ items, as you can rely on the following new feature:
+-don't abort on small latex errors which the latex interpreter can fix
+ itself (like missing $) (requested by S. Scharrer).
+-the preamble and postamble used when processing the latex tags can now
+ be customised by editing the files 'preamble' and 'postamble' in
+ <home dir>/.mnemosyne/latex.
+-the command invoking dvipng to create images from latex can now be
+ customised by editing the file 'dvipng' in <home dir>/.mnemosyne/latex
+-remember category and vice-versa settings across invocations when adding
+ items.
+-add maximise button to add and edit items under Windows (thanks to
+ pizzasource and S. Scharrer).
+-respect setting 'number of grade 0 items to learn at once' to zero
+ (reported by pizzasource).
+-fix word wrap when using left alignment (reported by TomC).
+-don't abort when sound initialisation fails.
+
+
+MNEMOSYNE 0.9.8.1: 2007-04-23
+
+-fix scheduling bug when importing new grade 0 items (reported by Jim
+Slattery).
+-remove incorrect statement with respect to grade 2 behaviour from the
+manual. In 0.9.8, the code was changed to be consistent with the old
+manual. This has been reverted, so that grade 2 behaviour is again more
+like 0.9.7.
+
+
+MNEMOSYNE 0.9.8: 2007-04-13
+
+-added sound support through tags like <sound src="a.wav">. The path to
+ the sound file is either absolute or relative to the location of your
+ .mem file. To play the sound again, press the 'R' key in the main window.
+ Supported file formats are wav, ogg and mp3. On Linux, this requires
+ properly installing pygame and its dependencies like SDL.
+-add option to increase size of non-latin characters relative to latin
+ characters (together with N. Kriha).
+-disable 'edit item' as long as the answer is not shown, to prevent
+ accidentally revealing it (patch by D. Herrmann).
+-fix handling of < inside latex tags (reported by jgurling, patch by N.
+ Kriha).
+-warn when exiting an 'Add items' which contains an item which has not
+ been added (requested by Airconditioning).
+-fix UTF-8 handling in the Supermemo7 file format (reported by Loco)
+-fix corner cases in scheduling algorithm (patch by Querido).
+-make button ordering more consistent in add items (reported by N. Kriha).
+-fixed handling of multiple latex tags (reported by M. Boespflug).
+-don't hang on latex errors (reported by M. Boespflug).
+-make tab-separated import resistant to the presence of multiple tabs
+ (reported by J. Forrez).
+-fixed hang when end quotes are not present inside a tag.
+-fixed regression where the active flag of categories was not respected on
+ import (reported by A. Rachmatullah).
+-respect left align option in 'preview items' (reported by E. Grannan).
+-making saving more robust while Windows is shutting down (fix by Tom).
+-various small interface cleanups and fixes.
+
+
+MNEMOSYNE 0.9.7: 2006-10-27
+
+-multiple items can now be selected in the 'edit items' dialog in order
+ to delete them, change their categories, or add their vice versas.
+-added option to import text files where question and answer are each on
+ their own line.
+-again respect window size set by user.
+-make delete button work in 'edit items' dialog (reported by J. Forrez).
+-worked around oddity (extra first character in text file) when importing
+ Word unicode text files.
+-various small interface cleanups and fixes.
+-updated documentation on the website.
+
+
+MNEMOSYNE 0.9.6: 2006-10-07
+
+-added LaTeX support for formulas, e.g. <latex>x^2+y^2=z^2</latex>. For
+ this you need latex and dvipng installed. Windows users can download
+ MiKTeX. (thanks to input from Henrik Skov Midtiby and J. David Lee.)
+-added possibility to preview an item. Useful if you work with tags.
+-added import from SuperMemo7 text files (code thanks to Dirk Herrmann).
+-either space, enter or return can be used to show the answer. The default
+ answer grade is set to 4, which once again can be chosen by either space,
+ enter or return (patch by Dirk Herrmann).
+-importing of txt files in utf8 unicode encoding now works (patch by Ian
+ MacLean).
+-exporting to txt files now uses utf8 encoding.
+-the total number of items in the status bar now only takes into account
+ items in active categories (patch by Mike Charlton).
+-prevent infinite recursion when searching for an item that was recently
+ deleted.
+-the titlebar now displays unicode filenames correctly.
+-after the window expands to accomodate a large item, it will shrink
+ back again.
+-fixed incorrect button text when switching databases.
+-new grade 0/1 items will now be scheduled after existing grade 0/1 items.
+
+
+MNEMOSYNE 0.9.5: 2006-08-03
+
+*** IMPORTANT UPGRADE NOTICE ***
+
+This version uses a different database format. Before upgrading, export your
+old data as xml. After upgrade, create a new database and import the old data
+from the xml file.
+
+-databases can now be moved back and forth between Windows and Unix.
+-added 'Reset learning data on export' option. This makes it easier to
+ create a file to share with other people.
+-the database is now saved each time a new item is added.
+-fixed a bug where exporting to txt always exported all categories
+ (reported by Dariusz Laska).
+-items which you forget will no longer be pushed out of the revision queue
+ by items which you still need to learn.
+
+
+MNEMOSYNE 0.9.4: 2006-06-04
+
+- category names are now sorted alphabetically.
+- relative path names now work for multiple img tags in the same string.
+  (patch by J. David Lee).
+- removed leftover debug code which could cause problems with Unicode
+  items.
+
+MNEMOSYNE 0.9.3: 2006-05-25
+
+- relative paths can now be used in img tags, i.e. <img src="foo/bar.png">
+  instead of <img src="/home/johndoe/.mnemosyne/foo/bar.png">. Paths are
+  relative to the location of the *.mem file.
+- added ability to export to a txt file (only the questions and the
+  answers are exported).
+- added locking mechanism which warns you if you start a second
+  instance of the program, which could lead to data loss.
+- fixed obscure button labelling bug (patch by J. David Lee).
+
+MNEMOSYNE 0.9.2: 2006-03-25
+
+*** IMPORTANT UPGRADE NOTICE ***
+
+This version uses a different database format. Before upgrading, export your
+old data as xml. After upgrade, create a new database and import the old data
+from the xml file.
+
+- only a limited number of grade 0 items is moved to the learning queue
+  at a single time. This is 5 by default, but can be set through the
+  configuration screen
+- added ability to import from tab separated text files (as exported e.g.
+  by Excel)
+
+MNEMOSYNE 0.9.1: 2006-02-09
+
+- fixed bug where an item would get asked twice after editing
+- fixed bug when using the popup menu on an empty spot
+
+MNEMOSYNE 0.9: 2006-02-08
+
+- first release of the new core.
+
+PYQT MEMAID 0.2.5: 2005-10-13
+
+- more bug fixes to work with recent versions of PyQt.
+- fix time offset bug when importing XML.
+
+PYQT MEMAID 0.2.4: 2005-09-25
+
+- honor the font setting in the input and edit dialogs.
+- update code to work with Superkaramba 0.36. Unicode is still a problem,
+  though.
+- improve XML importing and exporting (Jarno Elonen)
+- pressing the 'find' button repeatedly will scroll through all occurences
+  of the string in the list now (Jarno Elonen).
+- automatic import of pre-0.2.3 databases (Jarno Elonen)
+
+PYQT MEMAID 0.2.3: 2005-02-10
+
+- changes to file format to fix occasional saving under Windows problem.
+- fix bug with regard to category corruption when deleting an item.
+  Thanks to Jarno Elonen for tracking this down.
+
+PYQT MEMAID 0.2.2: 2004-10-17
+
+- better compatibility when importing from other MemAid versions
+- fixed SuperKaramba widget to work with recent versions of KDE and
+  SuperKaramba. Unicode characters are still a problem, which is probably
+  a bug in SuperKaramba.
+- added option to add vice versa question (Jarno Elonen)
+- better scheduling of inverse questions (Jarno Elonen)
+- added tooltips for grades (Jarno Elonen)
+- fixed digest crash for Unicode question (Jarno Elonen)
+
+PYQT MEMAID 0.2.1: 2003-11-30
+
+- added option to edit the current item
+- better handling of newlines and '<' literals
+- fixed error related to setdefaultencoding on some platforms
+- fixed bug when loading a new database using the SuperKaramba widget
+
+
+PYQT MEMAID 0.2: 2003-11-22
+
+- support for categories
+- includes a stand-alone program pyqt_memaid to add/edit questions
+- full support for Unicode, regardless of how your system locale is set
+- XML dataformat
+
+
+MEMAID SUPERKARAMBA 0.1.2: 2003-10-23
+
+- Don't require SWIG anymore to build
+
+
+MEMAID SUPERKARAMBA 0.1.1: 2003-10-22
+
+- Update for SuperKaramba 0.33
+
+
+MEMAID SUPERKARAMBA 0.1: 2003-10-18
+
+- First public release

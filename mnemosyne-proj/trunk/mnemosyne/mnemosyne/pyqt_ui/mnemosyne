@@ -1,0 +1,226 @@
+#!/usr/bin/python
+
+#
+# Mnemosyne <Peter.Bienstman@UGent.be>
+#
+
+import os
+import sys
+import time
+
+# Custom error handling on Windows.
+
+if sys.platform == "win32":
+
+    import ctypes
+
+    class Stderr(object):
+
+        # Note: it would be nice to queue the messages and display them
+        # using atexit, but but atexit does not seem to run.
+
+        def write(self, text):
+            if text.strip():
+                MessageBox = ctypes.windll.user32.MessageBoxA
+                MessageBox(None, text, "Mnemosyne", 0)
+
+    sys.stderr = Stderr()
+
+from optparse import OptionParser
+
+from mnemosyne.libmnemosyne import Mnemosyne
+
+# Parse options.
+parser = OptionParser()
+parser.usage = "%prog [<database_file>]"
+parser.add_option("-d", "--datadir", dest="data_dir",
+                  help="data directory", default=None)
+parser.add_option("--no-upgrades", dest="automatic_upgrades",
+    action="store_false", help="do not upgrade automatically", default=True)
+parser.add_option("--debug", dest="debug_file",
+    help="log debug information to FILE", metavar="FILE", default=None)
+parser.add_option("--web-server", dest="web_server",
+    action="store_true", help="run web server without GUI", default=False)
+parser.add_option("--sync-server", dest="sync_server",
+    action="store_true", help="run sync server without GUI", default=False)
+parser.add_option("--version", dest="version",
+    action="store_true", help="show version information", default=False)
+(options, args) = parser.parse_args()
+
+if options.version == True:
+    from mnemosyne.version import version
+    print "Mnemosyne " + version
+    sys.exit(0)
+
+# Check if we have to override the data_dir determined in libmnemosyne,
+# either because we explicitly specified a data_dir on the command line,
+# or because there is a mnemosyne directory present in the current directory.
+# The latter is handy when Mnemosyne is run from a USB key, so that there
+# is no need to refer to a drive letter which can change from computer to
+# computer.
+data_dir = None
+if options.data_dir != None:
+    data_dir = os.path.abspath(options.data_dir)
+elif os.path.exists(os.path.join(os.getcwdu(), "mnemosyne")) and \
+    os.path.isdir(os.path.join(os.getcwdu(), "mnemosyne")):
+    data_dir = os.path.abspath(os.path.join(os.getcwdu(), "mnemosyne"))
+    
+# Filename argument.
+if len(args) > 0:
+    filename = os.path.abspath(args[0])
+else:
+    filename = None
+
+# Load the Mnemosyne library.
+mnemosyne = Mnemosyne(upload_science_logs=None, interested_in_old_reps=True)
+
+# Run as server.
+if options.web_server == True or options.sync_server == True:
+    # Initialise Mnemosyne.
+    mnemosyne.components.insert(0,
+        ("mnemosyne.libmnemosyne.translators.no_translator", 
+         "NoTranslator"))
+    mnemosyne.components.append(\
+        ("mnemosyne.libmnemosyne.ui_components.main_widget", 
+         "MainWidget"))   
+    mnemosyne.components.append(\
+        ("mnemosyne.libmnemosyne.ui_components.headless_review_widget", 
+         "HeadlessReviewWidget"))      
+    mnemosyne.initialise(data_dir=data_dir, filename=filename,
+        automatic_upgrades=options.automatic_upgrades,
+        debug_file=options.debug_file, server_only=True)
+    # Sync server.
+    if options.sync_server == True:
+        from mnemosyne.libmnemosyne.sync_server import SyncServerThread
+        sync_server_thread = SyncServerThread(mnemosyne.component_manager)
+        sync_server_thread.daemon = True
+        sync_server_thread.start()
+    # Web server.
+    if options.web_server == True:
+        from mnemosyne.web_server.web_server import WebServerThread
+        web_server_thread = WebServerThread(mnemosyne.component_manager)
+        web_server_thread.daemon = True
+        web_server_thread.start()
+    # Heartbeat.
+    # TODO: if a sync request comes in while this is running, it will
+    # fail because of threading issues.
+    from threading import Timer
+    def heartbeat():
+        mnemosyne.database().load(mnemosyne.config()["last_database"])
+        mnemosyne.controller().heartbeat()
+        mnemosyne.database().unload()
+        heartbeat_thread = Timer(60 * 60 * 24, heartbeat)
+        heartbeat_thread.daemon = True
+        heartbeat_thread.start()
+    Timer(1, heartbeat).start()         
+    # Hack to allow killing the servers quickly during development.
+    try:
+        while True:
+            time.sleep(0.1)
+    except KeyboardInterrupt:
+        pass
+    sys.exit(0)
+
+# Initialise GUI toolkit.
+from PyQt4.QtGui import QApplication
+
+a = QApplication(sys.argv)
+a.setApplicationName("Mnemosyne")
+
+# Add other components we need. The translator should come first.
+# The UI components should come in the order they should be instantiated,
+# but apart from that, the order does not matter.
+mnemosyne.components.insert(0,
+                            ("mnemosyne.pyqt_ui.qt_translator",
+                             "QtTranslator"))
+mnemosyne.components.append(("mnemosyne.pyqt_ui.main_wdgt",
+                             "MainWdgt"))
+mnemosyne.components.append(("mnemosyne.pyqt_ui.review_wdgt",
+                             "ReviewWdgt"))
+mnemosyne.components.append(("mnemosyne.pyqt_ui.configuration",
+                             "PyQtConfiguration"))
+mnemosyne.components.append(("mnemosyne.pyqt_ui.pyqt_render_chain",
+                             "PyQtRenderChain"))
+mnemosyne.components.append(("mnemosyne.pyqt_ui.compact_database_dlg",
+                             "CompactDatabaseDlg"))
+mnemosyne.components.append(("mnemosyne.pyqt_ui.compact_database_dlg",
+                             "PyQtDatabaseMaintenance"))
+mnemosyne.components.append(("mnemosyne.pyqt_ui.add_cards_dlg",
+                             "AddCardsDlg"))
+mnemosyne.components.append(("mnemosyne.pyqt_ui.edit_card_dlg",
+                             "EditCardDlg"))
+mnemosyne.components.append(("mnemosyne.pyqt_ui.browse_cards_dlg",
+                             "BrowseCardsDlg"))
+mnemosyne.components.append(("mnemosyne.pyqt_ui.activate_cards_dlg",
+                             "ActivateCardsDlg"))
+mnemosyne.components.append(("mnemosyne.pyqt_ui.manage_card_types_dlg",
+                             "ManageCardTypesDlg"))
+mnemosyne.components.append(("mnemosyne.pyqt_ui.manage_plugins_dlg",
+                             "ManagePluginsDlg"))
+mnemosyne.components.append(("mnemosyne.pyqt_ui.statistics_dlg",
+                             "StatisticsDlg"))
+mnemosyne.components.append(("mnemosyne.pyqt_ui.card_type_wdgt_generic",
+                             "GenericCardTypeWdgt"))
+mnemosyne.components.append(("mnemosyne.pyqt_ui.statistics_wdgts_plotting",
+                             "ScheduleWdgt"))
+mnemosyne.components.append(("mnemosyne.pyqt_ui.statistics_wdgts_plotting",
+                             "RetentionScoreWdgt"))
+mnemosyne.components.append(("mnemosyne.pyqt_ui.statistics_wdgts_plotting",
+                             "GradesWdgt"))
+mnemosyne.components.append(("mnemosyne.pyqt_ui.statistics_wdgts_plotting",
+                             "EasinessWdgt"))
+mnemosyne.components.append(("mnemosyne.pyqt_ui.statistics_wdgts_plotting",
+                             "CardsAddedWdgt"))
+mnemosyne.components.append(("mnemosyne.pyqt_ui.statistics_wdgts_plotting",
+                             "CardsLearnedWdgt"))
+mnemosyne.components.append(("mnemosyne.pyqt_ui.statistics_wdgt_html",
+                             "HtmlStatisticsWdgt"))
+mnemosyne.components.append(("mnemosyne.pyqt_ui.criterion_wdgt_default",
+                             "DefaultCriterionWdgt"))
+mnemosyne.components.append(("mnemosyne.pyqt_ui.configuration_dlg",
+                             "ConfigurationDlg"))
+mnemosyne.components.append(("mnemosyne.pyqt_ui.sync_dlg",
+                             "SyncDlg"))
+mnemosyne.components.append(("mnemosyne.pyqt_ui.qt_sync_server",
+                             "QtSyncServer"))
+mnemosyne.components.append(("mnemosyne.pyqt_ui.qt_web_server",
+                             "QtWebServer"))
+mnemosyne.components.append(("mnemosyne.pyqt_ui.configuration_wdgt_main",
+                             "ConfigurationWdgtMain"))
+mnemosyne.components.append(("mnemosyne.pyqt_ui.configuration_wdgt_card_appearance",
+                             "ConfigurationWdgtCardAppearance"))
+mnemosyne.components.append(("mnemosyne.pyqt_ui.configuration_wdgt_servers",
+                             "ConfigurationWdgtServers"))
+mnemosyne.components.append(("mnemosyne.pyqt_ui.getting_started_dlg",
+                             "GettingStartedDlg"))
+mnemosyne.components.append(("mnemosyne.pyqt_ui.tip_dlg",
+                             "TipDlg"))
+mnemosyne.components.append(("mnemosyne.pyqt_ui.about_dlg",
+                             "AboutDlg"))
+mnemosyne.components.append(("mnemosyne.pyqt_ui.import_dlg",
+                             "ImportDlg"))
+mnemosyne.components.append(("mnemosyne.pyqt_ui.export_dlg",
+                             "ExportDlg"))
+mnemosyne.components.append(("mnemosyne.pyqt_ui.export_metadata_dlg",
+                             "ExportMetadataDlg"))
+mnemosyne.components.append(("mnemosyne.pyqt_ui.prefill_tag_behaviour_plugin",
+                             "PrefillTagBehaviourPlugin"))
+mnemosyne.extra_components_for_plugin["CrammingPlugin"] = \
+                            [("mnemosyne.pyqt_ui.review_wdgt_cramming",
+                             "ReviewWdgtCramming"),
+                             ("mnemosyne.pyqt_ui.configuration_wdgt_cramming",
+                             "ConfigurationWdgtCramming")]
+
+# Run Mnemosyne.
+mnemosyne.initialise(data_dir=data_dir, filename=filename,
+		     automatic_upgrades=options.automatic_upgrades,
+		     debug_file=options.debug_file)
+mnemosyne.main_widget().show()
+mnemosyne.main_widget().raise_()  # Needed for OSX.
+if mnemosyne.config()["first_run"] == True:
+    mnemosyne.controller().show_getting_started_dialog()
+    mnemosyne.config()["first_run"] = False
+elif mnemosyne.config()["show_daily_tips"] == True:
+    mnemosyne.controller().show_tip_dialog()
+a.exec_()
+mnemosyne.finalise()

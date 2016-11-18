@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ManagePluginsDlg</class>
+ <widget class="QDialog" name="ManagePluginsDlg">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>382</width>
+    <height>495</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Manage plugins</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Installed plugins (active and inactive):</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QListWidget" name="plugin_list">
+       <property name="minimumSize">
+        <size>
+         <width>350</width>
+         <height>200</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Plugin description:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTextBrowser" name="plugin_description">
+       <property name="minimumSize">
+        <size>
+         <width>350</width>
+         <height>200</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout">
+       <item>
+        <widget class="QPushButton" name="ok_button">
+         <property name="text">
+          <string>&amp;OK</string>
+         </property>
+         <property name="autoDefault">
+          <bool>true</bool>
+         </property>
+         <property name="default">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="install_button">
+         <property name="text">
+          <string>&amp;Install new plugin</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="delete_button">
+         <property name="text">
+          <string>&amp;Delete plugin</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="exit_button">
+         <property name="text">
+          <string>E&amp;xit</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="mnemosyne.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>exit_button</sender>
+   <signal>clicked()</signal>
+   <receiver>ManagePluginsDlg</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>281</x>
+     <y>151</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>164</x>
+     <y>87</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ok_button</sender>
+   <signal>clicked()</signal>
+   <receiver>ManagePluginsDlg</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>45</x>
+     <y>155</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>148</x>
+     <y>87</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>install_button</sender>
+   <signal>clicked()</signal>
+   <receiver>ManagePluginsDlg</receiver>
+   <slot>install_plugin()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>114</x>
+     <y>468</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>179</x>
+     <y>243</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>delete_button</sender>
+   <signal>clicked()</signal>
+   <receiver>ManagePluginsDlg</receiver>
+   <slot>delete_plugin()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>225</x>
+     <y>468</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>179</x>
+     <y>243</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>plugin_list</sender>
+   <signal>currentItemChanged(QListWidgetItem*,QListWidgetItem*)</signal>
+   <receiver>ManagePluginsDlg</receiver>
+   <slot>plugin_selected()()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>190</x>
+     <y>125</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>190</x>
+     <y>243</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>plugin_list</sender>
+   <signal>itemClicked(QListWidgetItem*)</signal>
+   <receiver>ManagePluginsDlg</receiver>
+   <slot>plugin_selected()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>190</x>
+     <y>125</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>190</x>
+     <y>243</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
